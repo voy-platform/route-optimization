@@ -1,9 +1,10 @@
-### POST request to https://route-optimization-pearl.vercel.app/api/optimize-route
+# Usage
 
-example body:
-
-```json
-{
+## Example Query: 
+```bash
+curl -X POST https://route-optimization-pearl.vercel.app/api/optimize-route \
+-H "Content-Type: application/json" \
+-d '{
   "dc": {
     "id": "DC101",
     "name": "Charlottesville Central",
@@ -128,5 +129,57 @@ example body:
   ],
   "num_of_vehicles": 15,
   "max_stops_per_vehicle": 6
+}'
+```
+
+## Return Type:
+```json
+{
+    "message": "Route optimization processed successfully.",
+    "routes": {
+        "dropped_stops": [
+            {
+                "coordinates": [
+                    38.118678,
+                    -78.570616
+                ],
+                "id": "7c1dc4f8-9049-4277-b84e-a1bec7c73f30"
+            },
+            {
+                "coordinates": [
+                    37.946814,
+                    -78.560959
+                ],
+                "id": "02b0de54-e1b5-46ec-9c7b-5cbfc7c02287"
+            },
+            // More dropped stops
+        ],
+        "routes": [
+            {
+                "distance": 13,
+                "num_stops": 6,
+                "stopIds": [
+                    {
+                        "coordinates": [
+                            38.029183,
+                            -78.38869
+                        ],
+                        "id": "88b66e13-128e-48f7-876e-d0d1bfe389a3"
+                    },
+                    {
+                        "coordinates": [
+                            37.979317,
+                            -78.377061
+                        ],
+                        "id": "c0ee91e0-0486-44ae-b9e4-36af808af45a"
+                    },
+                    // More stops
+                ]
+            },
+            // More Routes
+        ],
+        "total_distance": 120,
+        "total_stops": 90
+    }
 }
 ```
