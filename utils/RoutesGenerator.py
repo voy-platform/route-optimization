@@ -160,3 +160,11 @@ class RoutesGenerator:
         # Print solution on console.
         if solution:
             return self.print_solution(data, manager, routing, solution)
+
+
+
+# {
+#     "rewrites": [
+#         { "source": "/(.*)", "destination": "/api/index" }
+#     ]
+# }

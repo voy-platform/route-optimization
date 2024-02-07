@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from RoutesGenerator import RoutesGenerator
+from utils.RoutesGenerator import RoutesGenerator
 
 app = Flask(__name__)
 
