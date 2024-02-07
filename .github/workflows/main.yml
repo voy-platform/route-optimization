@@ -2,7 +2,7 @@ name: deploy-route-optimization
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 env:
@@ -17,36 +17,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.8'
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
 
-    - name: Create package directory
-      run: mkdir ${{ env.PACKAGE_DIR }}
+      - name: Create package directory
+        run: mkdir ${{ env.PACKAGE_DIR }}
 
-    - name: List package directory contents
-      run: ls -l ${{ env.PACKAGE_DIR }}
+      - name: Install dependencies
+        run: pip install -r requirements.txt -t ${{ env.PACKAGE_DIR }}
 
-    - name: Install dependencies
-      run: pip install -r requirements.txt -t ${{ env.PACKAGE_DIR }}
+      - name: Add Python scripts to the package directory
+        run: |
+          cp lambda_function.py ${{ env.PACKAGE_DIR }}
+          cp RoutesGenerator.py ${{ env.PACKAGE_DIR }}
 
-    - name: Add Python scripts to the package directory
-      run: |
-        cp lambda_function.py ${{ env.PACKAGE_DIR }}
-        cp RoutesGenerator.py ${{ env.PACKAGE_DIR }}
+      - name: List package directory contents
+        run: ls -l ${{ env.PACKAGE_DIR }}
 
-    - name: Zip the package
-      run: zip -r ${{ env.PACKAGE_DIR }}.zip ${{ env.PACKAGE_DIR }}
+      - name: Zip the package
+        run: zip -r ${{ env.PACKAGE_DIR }}.zip ${{ env.PACKAGE_DIR }}
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
-    - name: Upload to S3
-      run: aws s3 cp ${{ env.PACKAGE_DIR }}.zip s3://${{ env.S3_BUCKET }}/${{ env.PACKAGE_DIR }}.zip
+      - name: Upload to S3
+        run: aws s3 cp ${{ env.PACKAGE_DIR }}.zip s3://${{ env.S3_BUCKET }}/${{ env.PACKAGE_DIR }}.zip
