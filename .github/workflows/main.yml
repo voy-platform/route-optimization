@@ -28,6 +28,7 @@ jobs:
       run: mkdir ${{ env.PACKAGE_DIR }}
 
     - name: Install dependencies
+      run: ls -l ${{ env.PACKAGE_DIR }}
       run: pip install -r requirements.txt -t ${{ env.PACKAGE_DIR }}
 
     - name: Add Python scripts to the package directory
